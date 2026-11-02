@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
@@ -60,12 +61,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center){
-        OutlinedTextField(
-            value = urltext,
-            onValueChange = {newText : String -> urltext = newText},
-            label = { Text("url") },
-        )
-        Button(onClick = { actualurl = urltext}) { Text("submit") }
+        Row() {
+            OutlinedTextField(
+                value = urltext,
+                onValueChange = {newText : String -> urltext = newText},
+                label = { Text("url") },
+            )
+            Button(onClick = { actualurl = parseURLStringy(urltext)}) { Text("submit") }
+        }
 
         WebView(actualurl)
     }
@@ -93,4 +96,13 @@ fun WebView(url: String, modifier: Modifier = Modifier) {
             }
         }
     )
+}
+
+fun parseURLStringy(badurl : String) : String{
+    var goodurl : String = badurl
+    if(!badurl.startsWith("https://")){
+        goodurl = "https://${badurl}"
+    }
+    return goodurl
+
 }
